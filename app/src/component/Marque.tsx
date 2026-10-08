@@ -36,7 +36,7 @@ const getUnitBn = (unit: string) => {
 
 const Marque = async () => {
     const response = await fetch(
-        "https://api.api-store.workers.dev/api/bazardor/products/",
+        "https://api.abcz.workers.dev/api/bazardor/products/",
         {
             next: {
                 revalidate: 60,
