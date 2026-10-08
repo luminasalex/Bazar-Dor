@@ -53,7 +53,7 @@ const Marque = async () => {
     return (
         <section className="w-full overflow-hidden border-y border-[#dce6df] bg-[#f8fdf9]">
             <Marquee
-                speed={45}
+                speed={150}
                 pauseOnHover
                 gradient={false}
                 autoFill
@@ -84,8 +84,8 @@ const Marque = async () => {
                             {/* Change */}
                             <span
                                 className={`ml-2 flex items-center gap-1 whitespace-nowrap text-[13px] font-semibold ${isUp
-                                        ? "text-red-500"
-                                        : "text-green-600"
+                                    ? "text-red-500"
+                                    : "text-green-600"
                                     }`}
                             >
                                 <span>
