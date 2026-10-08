@@ -1,6 +1,6 @@
 import Marquee from "react-fast-marquee";
 
-type Product = {
+interface Product {
     id: number;
     slug: string;
     nameBn: string;
