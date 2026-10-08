@@ -45,7 +45,7 @@ const Marque = async () => {
     );
 
     if (!response.ok) {
-        throw new Error("Failed to fetch products");
+        console.log("Failed to fetch products");
     }
 
     const data: Product[] = await response.json();

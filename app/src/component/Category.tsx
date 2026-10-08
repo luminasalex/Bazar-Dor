@@ -19,7 +19,7 @@ const Category = async () => {
     );
 
     if (!response.ok) {
-        throw new Error("Failed to fetch categories");
+        console.log("Failed to fetch categories");
     }
 
     const data: Category[] = await response.json();
