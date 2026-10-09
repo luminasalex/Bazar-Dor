@@ -17,10 +17,13 @@ interface ApiResponse {
     products: Product[];
 }
 
+// ---------- Unit map (English → Bengali) ----------
 const UNIT_BN: Record<string, string> = {
     kg: "কেজি",
     gram: "গ্রাম",
     liter: "লিটার",
+    litre: "লিটার",     // alternative spelling
+    ltr: "লিটার",       // short form
     ml: "মিলি",
     piece: "পিস",
     dozen: "ডজন",
@@ -28,8 +31,10 @@ const UNIT_BN: Record<string, string> = {
     bag: "বস্তা",
 };
 
-const getUnitBn = (unit: string) =>
-    UNIT_BN[unit?.toLowerCase()] || unit || "";
+const getUnitBn = (unit: string) => {
+    if (!unit) return "";
+    return UNIT_BN[unit.toLowerCase()] || unit;
+};
 
 const AllProduct = async () => {
     let products: Product[] = [];
@@ -56,8 +61,6 @@ const AllProduct = async () => {
             <div className="mx-auto max-w-[1300px]">
 
                 {/* Header */}
-
-
                 <div className="mb-5 flex flex-col gap-2 sm:mb-6">
                     <h2 className="text-base font-bold text-[#111914] xs:text-lg sm:text-xl">
                         সব পণ্য
