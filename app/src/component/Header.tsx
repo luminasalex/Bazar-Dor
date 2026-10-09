@@ -83,7 +83,8 @@ const Header = () => {
                 {/* ================= RIGHT ================= */}
                 <div className="flex shrink-0 items-center gap-1.5 xs:gap-2">
                     {/* Sign Up */}
-                    <button
+                    <Link
+                        href="/sing-up"
                         className="
                             rounded-md border border-transparent bg-white
                             px-2.5 py-1.5 text-xs font-medium text-gray-700
@@ -95,10 +96,11 @@ const Header = () => {
                         "
                     >
                         সাইন আপ
-                    </button>
+                    </Link>
 
                     {/* Sign In */}
-                    <button
+                    <Link
+                        href="/login"
                         className="
                             rounded-md bg-green-600
                             px-2.5 py-1.5 text-xs font-medium text-white
@@ -110,7 +112,7 @@ const Header = () => {
                         "
                     >
                         সাইন ইন
-                    </button>
+                    </Link>
                 </div>
             </div>
         </header>

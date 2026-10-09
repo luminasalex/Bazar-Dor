@@ -43,7 +43,7 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col">
         <Header />
 
-        <Suspense
+        {/* <Suspense
           fallback={
             <div className="h-10 w-full animate-pulse bg-gray-100" />
           }
@@ -57,7 +57,7 @@ export default function RootLayout({
           }
         >
           <Marque />
-        </Suspense>
+        </Suspense> */}
 
         <main className="flex-1 bg-[#F0F5F0]">
           {children}
