@@ -19,20 +19,27 @@ interface Product {
     };
 }
 
-const getUnitBn = (unit: string) => {
-    const units: Record<string, string> = {
-        kg: "কেজি",
-        gram: "গ্রাম",
-        liter: "লিটার",
-        ml: "মিলি",
-        piece: "পিস",
-        dozen: "ডজন",
-        packet: "প্যাকেট",
-        bag: "বস্তা",
-    };
-
-    return units[unit.toLowerCase()] || unit;
+// ---------- Unit map (English → Bengali) ----------
+const UNIT_BN: Record<string, string> = {
+    kg: "কেজি",
+    gram: "গ্রাম",
+    liter: "লিটার",
+    litre: "লিটার",
+    ltr: "লিটার",
+    ml: "মিলি",
+    piece: "পিস",
+    dozen: "ডজন",
+    packet: "প্যাকেট",
+    bag: "বস্তা",
 };
+
+const getUnitBn = (unit: string) => {
+    if (!unit) return "";
+    return UNIT_BN[unit.toLowerCase()] || unit;
+};
+
+// ---------- Number → Bengali numerals ----------
+const toBn = (n: number) => n.toLocaleString("bn-BD");
 
 const Marque = async () => {
     const response = await fetch(
@@ -49,6 +56,8 @@ const Marque = async () => {
     }
 
     const data: Product[] = await response.json();
+
+    if (!data || data.length === 0) return null;
 
     return (
         <section className="w-full overflow-hidden border-y border-[#dce6df] bg-[#f8fdf9]">
@@ -95,7 +104,7 @@ const Marque = async () => {
                                 {item.nameBn}
                             </span>
 
-                            {/* Price */}
+                            {/* Price (Bengali numerals) */}
                             <span
                                 className="
                                     ml-1.5 whitespace-nowrap text-xs text-gray-600
@@ -103,10 +112,10 @@ const Marque = async () => {
                                     sm:text-[14px]
                                 "
                             >
-                                {item.today} টাকা/{getUnitBn(item.unit)}
+                                {toBn(item.today)} টাকা/{getUnitBn(item.unit)}
                             </span>
 
-                            {/* Change */}
+                            {/* Change (Bengali numerals) */}
                             <span
                                 className={`
                                     ml-1.5 flex items-center gap-0.5 whitespace-nowrap
@@ -119,7 +128,7 @@ const Marque = async () => {
                                 <span aria-hidden="true">
                                     {isUp ? "▲" : "▼"}
                                 </span>
-                                <span>{item.change.pct}%</span>
+                                <span>{toBn(item.change.pct)}%</span>
                             </span>
                         </div>
                     );
