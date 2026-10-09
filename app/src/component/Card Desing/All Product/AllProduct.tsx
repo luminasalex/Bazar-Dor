@@ -58,10 +58,11 @@ const AllProduct = async () => {
                 {/* Header */}
 
 
-                <div className="mb-5 flex items-center justify-between">
+                <div className="mb-5 flex flex-col gap-2 sm:mb-6">
                     <h2 className="text-base font-bold text-[#111914] xs:text-lg sm:text-xl">
                         সব পণ্য
                     </h2>
+
                     <p className="text-[11px] text-gray-500 xs:text-xs">
                         {products.length}টি পণ্যের আজকের দাম ও পরিবর্তন
                     </p>
