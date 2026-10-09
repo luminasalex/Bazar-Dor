@@ -17,7 +17,7 @@ interface Product {
         dir: "up" | "down";
         pct: number;
     };
-};
+}
 
 const getUnitBn = (unit: string) => {
     const units: Record<string, string> = {
@@ -64,35 +64,62 @@ const Marque = async () => {
                     return (
                         <div
                             key={item.id}
-                            className="flex h-[42px] shrink-0 items-center border-r border-[#e1e8e3] px-5"
+                            className="
+                                flex h-9 shrink-0 items-center
+                                border-r border-[#e1e8e3]
+                                px-3
+                                xs:h-10 xs:px-4
+                                sm:h-[42px] sm:px-5
+                            "
                         >
                             {/* Icon */}
-                            <span className="mr-2 text-[15px]">
+                            <span
+                                className="
+                                    mr-1.5 text-xs
+                                    xs:mr-2 xs:text-sm
+                                    sm:text-[15px]
+                                "
+                                aria-hidden="true"
+                            >
                                 {item.categoryIcon || item.image}
                             </span>
 
                             {/* Product Name */}
-                            <span className="whitespace-nowrap text-[14px] font-medium text-gray-700">
+                            <span
+                                className="
+                                    whitespace-nowrap text-xs font-medium text-gray-700
+                                    xs:text-[13px]
+                                    sm:text-[14px]
+                                "
+                            >
                                 {item.nameBn}
                             </span>
 
                             {/* Price */}
-                            <span className="ml-2 whitespace-nowrap text-[14px] text-gray-600">
+                            <span
+                                className="
+                                    ml-1.5 whitespace-nowrap text-xs text-gray-600
+                                    xs:ml-2 xs:text-[13px]
+                                    sm:text-[14px]
+                                "
+                            >
                                 {item.today} টাকা/{getUnitBn(item.unit)}
                             </span>
 
                             {/* Change */}
                             <span
-                                className={`ml-2 flex items-center gap-1 whitespace-nowrap text-[13px] font-semibold ${isUp
-                                    ? "text-red-500"
-                                    : "text-green-600"
-                                    }`}
+                                className={`
+                                    ml-1.5 flex items-center gap-0.5 whitespace-nowrap
+                                    text-[11px] font-semibold
+                                    xs:ml-2 xs:gap-1 xs:text-xs
+                                    sm:text-[13px]
+                                    ${isUp ? "text-red-500" : "text-green-600"}
+                                `}
                             >
-                                <span>
+                                <span aria-hidden="true">
                                     {isUp ? "▲" : "▼"}
                                 </span>
-
-                                {item.change.pct}%
+                                <span>{item.change.pct}%</span>
                             </span>
                         </div>
                     );

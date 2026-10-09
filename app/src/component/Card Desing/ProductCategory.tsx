@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -19,12 +18,31 @@ const ProductCategory = ({ slug, nameBn, icon }: ProductCategoryProps) => {
     return (
         <Link
             href={`/category/${slug}`}
-            className={`flex shrink-0 items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-all duration-200 ${isActive
-                ? "bg-green-600 text-white"
-                : "text-gray-700 hover:bg-green-100 hover:text-green-700"
-                }`}
+            aria-current={isActive ? "page" : undefined}
+            className={`
+                group flex shrink-0 items-center justify-center gap-1.5
+                rounded-md px-2.5 py-1.5
+                text-xs font-medium
+                transition-all duration-200
+                xs:gap-2 xs:px-3 xs:py-2 xs:text-sm
+                md:gap-2.5 md:px-3.5 md:py-2.5
+                lg:px-4 lg:py-2.5 lg:text-[15px]
+                ${isActive
+                    ? "bg-green-600 text-white shadow-sm shadow-green-600/20"
+                    : "text-gray-700 hover:bg-green-100 hover:text-green-700 active:bg-green-200"
+                }
+            `}
         >
-            <span className="text-base leading-none">
+            <span
+                className="
+                    text-sm leading-none
+                    transition-transform duration-200
+                    group-hover:scale-110
+                    xs:text-base
+                    md:text-lg
+                "
+                aria-hidden="true"
+            >
                 {icon}
             </span>
 
@@ -36,4 +54,3 @@ const ProductCategory = ({ slug, nameBn, icon }: ProductCategoryProps) => {
 };
 
 export default ProductCategory;
-
