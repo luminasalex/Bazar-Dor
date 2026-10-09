@@ -1,3 +1,4 @@
+"use client"
 import Image from "next/image";
 import heroImage from "../../../public/bazar-hero.png";
 
@@ -65,6 +66,7 @@ const Hero = () => {
 
                     {/* Button */}
                     <button
+                        onClick={() => window.scrollTo({ top: 2100, behavior: "smooth" })}
                         type="button"
                         className="
                             mt-5 rounded-md bg-[#008f46]
