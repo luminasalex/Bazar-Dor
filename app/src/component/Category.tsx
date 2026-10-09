@@ -1,6 +1,5 @@
 import ProductCategory from "./Card Desing/ProductCategory";
 
-
 interface Category {
     id: number;
     slug: string;
@@ -24,9 +23,25 @@ const Category = async () => {
 
     const data: Category[] = await response.json();
 
+    if (!data || data.length === 0) {
+        return null;
+    }
+
     return (
         <section className="w-full border-b border-gray-100 bg-white">
-            <div className="mx-auto flex max-w-[1300px] items-start justify-start gap-1 px-5">
+            <div
+                className="
+                    mx-auto flex max-w-[1300px] items-center justify-start
+                    gap-1 overflow-x-auto scroll-smooth
+                    px-3 py-2
+                    xs:gap-1.5 xs:px-4 xs:py-2.5
+                    sm:gap-2 sm:px-5 sm:py-3
+                    md:gap-2 md:px-6
+                    lg:px-8
+                    [-ms-overflow-style:none] [scrollbar-width:none]
+                    [&::-webkit-scrollbar]:hidden
+                "
+            >
                 {data.map((item) => (
                     <ProductCategory
                         key={item.id}
