@@ -16,8 +16,10 @@ interface Product {
 }
 
 interface Category {
-    icon: string;
+    id: string;
+    slug: string;
     nameBn: string;
+    icon: string;
 }
 
 interface CategoryResponse {
@@ -34,34 +36,44 @@ interface CategoryPageProps {
 const CategoryPage = async ({ params }: CategoryPageProps) => {
     const { catagoryid } = await params;
 
+
     let data: CategoryResponse | null = null;
 
     try {
         const response = await fetch(
             `https://api.abcz.workers.dev/api/bazardor/categories/${catagoryid}`,
-            {
-                next: { revalidate: 60 },
-            }
+            { next: { revalidate: 60 } }
         );
 
         if (!response.ok) {
-            // 404 হলে not-found page দেখাবে
-            if (response.status === 404) {
-                notFound();
-            }
-            // অন্য error হলে throw
+            if (response.status === 404) notFound();
             throw new Error(`API error: ${response.status}`);
         }
 
-        data = await response.json();
+        const json = await response.json();
+
+        if (json.products && json.category) {
+            data = json;
+        } else {
+
+            const productsRes = await fetch(
+                `https://api.abcz.workers.dev/api/bazardor/products?category=${catagoryid}`,
+                { next: { revalidate: 60 } }
+            );
+
+            const productsJson = productsRes.ok ? await productsRes.json() : [];
+
+            data = {
+                category: json,
+                products: Array.isArray(productsJson) ? productsJson : productsJson.products ?? [],
+            };
+        }
     } catch (err) {
         console.error("Fetch failed:", err);
-        notFound(); // অথবা একটা friendly error UI দেখান
-    }
-
-    if (!data) {
         notFound();
     }
+
+    if (!data) notFound();
 
     const { category, products } = data;
 
