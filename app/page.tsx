@@ -1,5 +1,5 @@
 
-import Hero from "./(src)/component/Hero";
+import Hero from "./src/component/Hero";
 
 export default function Home() {
   return (

@@ -1,11 +1,15 @@
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import Header from "./(src)/component/Header";
-import Footer from "./(src)/component/Footer";
-import Category from "./(src)/component/Category";
-import Marque from "./(src)/component/Marque";
+import type { ReactNode } from "react";
 import { Suspense } from "react";
+
+import "./globals.css";
+
+import Header from "./src/component/Header";
+import Footer from "./src/component/Footer";
+import Category from "./src/component/Category";
+import Marque from "./src/component/Marque";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,29 +23,47 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Bazar Dor",
-  description: "A modern and clean e-commerce platform built with React, Next.js, and Tailwind CSS.",
+  description:
+    "A modern and clean platform for checking daily market prices in Bangladesh.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+interface RootLayoutProps {
+  children: ReactNode;
+}
+
+export default function RootLayout({
+  children,
+}: RootLayoutProps) {
   return (
     <html
-      lang="en"
+      lang="bn"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       data-theme="light"
     >
-      <body className="min-h-full flex flex-col">
-        <div>
-          <Header />
-          <Suspense fallback={<div className="h-10 w-full animate-pulse bg-gray-100" />}>
-            <Category />
-          </Suspense>
+      <body className="flex min-h-full flex-col">
+        <Header />
 
-          <Suspense fallback={<div className="h-[42px] w-full animate-pulse bg-[#f8fdf9]" />}>
-            <Marque />
-          </Suspense>
-          <main className="bg-[#F0F5F0]">{children}</main>
-          <Footer />
-        </div>
+        <Suspense
+          fallback={
+            <div className="h-10 w-full animate-pulse bg-gray-100" />
+          }
+        >
+          <Category />
+        </Suspense>
+
+        <Suspense
+          fallback={
+            <div className="h-[42px] w-full animate-pulse bg-[#f8fdf9]" />
+          }
+        >
+          <Marque />
+        </Suspense>
+
+        <main className="flex-1 bg-[#F0F5F0]">
+          {children}
+        </main>
+
+        <Footer />
       </body>
     </html>
   );
