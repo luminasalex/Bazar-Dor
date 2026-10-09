@@ -3,6 +3,23 @@ import CatagoryCard from "@/app/src/component/Card Desing/CatagoryCard";
 
 export const instant = false;
 
+// ---------- Unit map (English → Bengali) ----------
+const UNIT_BN: Record<string, string> = {
+    kg: "কেজি",
+    gram: "গ্রাম",
+    liter: "লিটার",
+    ml: "মিলি",
+    piece: "পিস",
+    dozen: "ডজন",
+    packet: "প্যাকেট",
+    bag: "বস্তা",
+};
+
+const getUnitBn = (unit: string) => {
+    if (!unit) return "";
+    return UNIT_BN[unit.toLowerCase()] || unit;
+};
+
 interface Product {
     id: number;
     nameBn: string;
@@ -36,7 +53,6 @@ interface CategoryPageProps {
 const CategoryPage = async ({ params }: CategoryPageProps) => {
     const { catagoryid } = await params;
 
-
     let data: CategoryResponse | null = null;
 
     try {
@@ -55,7 +71,6 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
         if (json.products && json.category) {
             data = json;
         } else {
-
             const productsRes = await fetch(
                 `https://api.abcz.workers.dev/api/bazardor/products?category=${catagoryid}`,
                 { next: { revalidate: 60 } }
@@ -65,7 +80,9 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
 
             data = {
                 category: json,
-                products: Array.isArray(productsJson) ? productsJson : productsJson.products ?? [],
+                products: Array.isArray(productsJson)
+                    ? productsJson
+                    : productsJson.products ?? [],
             };
         }
     } catch (err) {
@@ -89,7 +106,7 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
                             {category.nameBn}
                         </h1>
                         <p className="mt-1 text-sm text-gray-500 sm:text-base">
-                            {products.length}টি পণ্যের আজকের দাম ও পরিবর্তন
+                            {products.length.toLocaleString("bn-BD")}টি পণ্যের আজকের দাম ও পরিবর্তন
                         </p>
                     </div>
                 </div>
@@ -105,7 +122,7 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
                                 key={product.id}
                                 icon={product.categoryIcon}
                                 name={product.nameBn}
-                                unit={`প্রতি ${product.unit}`}
+                                unit={`প্রতি ${getUnitBn(product.unit)}`}
                                 price={product.today}
                                 change={product.change.pct}
                             />
