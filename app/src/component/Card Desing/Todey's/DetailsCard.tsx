@@ -1,15 +1,19 @@
+import Link from "next/link";
+
 interface CatagoryCardProps {
     icon: string;
     name: string;
     unit: string;
     price: number;
     change: number;
+    slug: string;
 }
 
-const CatagoryCard = ({ icon, name, unit, price, change }: CatagoryCardProps) => {
+const CatagoryCard = ({ icon, name, unit, price, change, slug }: CatagoryCardProps) => {
     const isUp = change > 0;
 
     return (
+        <Link href={`/product/${slug}`} className="block h-full">
         <article
             className="
                 group flex h-full flex-col justify-between
@@ -101,6 +105,7 @@ const CatagoryCard = ({ icon, name, unit, price, change }: CatagoryCardProps) =>
                 </span>
             </div>
         </article>
+        </Link>
     );
 };
 
