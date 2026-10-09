@@ -1,4 +1,4 @@
-import DetailsCard from "@/app/src/component/Card Desing/Todey's/Details";
+import DetailsCard from "@/app/src/component/Card Desing/Todey's/DetailsCard";
 
 interface Product {
     id: number;

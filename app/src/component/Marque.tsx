@@ -19,7 +19,6 @@ interface Product {
     };
 }
 
-// ---------- Unit map (English → Bengali) ----------
 const UNIT_BN: Record<string, string> = {
     kg: "কেজি",
     gram: "গ্রাম",
@@ -38,7 +37,7 @@ const getUnitBn = (unit: string) => {
     return UNIT_BN[unit.toLowerCase()] || unit;
 };
 
-// ---------- Number → Bengali numerals ----------
+
 const toBn = (n: number) => n.toLocaleString("bn-BD");
 
 const Marque = async () => {
@@ -81,7 +80,7 @@ const Marque = async () => {
                                 sm:h-[42px] sm:px-5
                             "
                         >
-                            {/* Icon */}
+
                             <span
                                 className="
                                     mr-1.5 text-xs
@@ -93,7 +92,7 @@ const Marque = async () => {
                                 {item.categoryIcon || item.image}
                             </span>
 
-                            {/* Product Name */}
+
                             <span
                                 className="
                                     whitespace-nowrap text-xs font-medium text-gray-700
@@ -104,7 +103,6 @@ const Marque = async () => {
                                 {item.nameBn}
                             </span>
 
-                            {/* Price (Bengali numerals) */}
                             <span
                                 className="
                                     ml-1.5 whitespace-nowrap text-xs text-gray-600
@@ -115,7 +113,7 @@ const Marque = async () => {
                                 {toBn(item.today)} টাকা/{getUnitBn(item.unit)}
                             </span>
 
-                            {/* Change (Bengali numerals) */}
+
                             <span
                                 className={`
                                     ml-1.5 flex items-center gap-0.5 whitespace-nowrap
