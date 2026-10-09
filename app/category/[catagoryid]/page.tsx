@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import CatagoryCard from "@/app/src/component/Card Desing/CatagoryCard";
+import SortDropdown from "@/app/category/[catagoryid]/SortDropdown";
 
 export const instant = false;
 
@@ -48,10 +50,33 @@ interface CategoryPageProps {
     params: Promise<{
         catagoryid: string;
     }>;
+    searchParams: Promise<{
+        sort?: string;
+    }>;
 }
 
-const CategoryPage = async ({ params }: CategoryPageProps) => {
+// ---------- Sort helpers ----------
+type SortKey = "default" | "price-asc" | "price-desc";
+
+const sortProducts = (products: Product[], sort: SortKey) => {
+    const copy = [...products];
+    switch (sort) {
+        case "price-asc":
+            return copy.sort((a, b) => a.today - b.today);
+        case "price-desc":
+            return copy.sort((a, b) => b.today - a.today);
+        case "default":
+        default:
+            return copy;
+    }
+};
+
+const CategoryPage = async ({ params, searchParams }: CategoryPageProps) => {
     const { catagoryid } = await params;
+    const { sort: rawSort } = await searchParams;
+
+    const sort: SortKey =
+        rawSort === "price-asc" || rawSort === "price-desc" ? rawSort : "default";
 
     let data: CategoryResponse | null = null;
 
@@ -93,10 +118,12 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
     if (!data) notFound();
 
     const { category, products } = data;
+    const sortedProducts = sortProducts(products, sort);
 
     return (
         <section className="min-h-screen bg-[#f0f5f0] px-4 py-8">
             <div className="mx-auto max-w-6xl">
+                {/* Header */}
                 <div className="mb-7 flex items-center gap-4 rounded-2xl border border-[#dce6dc] bg-white/80 p-5 sm:p-7">
                     <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-[#edf5ed] text-3xl">
                         {category.icon}
@@ -116,18 +143,29 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
                         কোনো পণ্য পাওয়া যায়নি।
                     </p>
                 ) : (
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                        {products.map((product) => (
-                            <CatagoryCard
-                                key={product.id}
-                                icon={product.categoryIcon}
-                                name={product.nameBn}
-                                unit={`প্রতি ${getUnitBn(product.unit)}`}
-                                price={product.today}
-                                change={product.change.pct}
-                            />
-                        ))}
-                    </div>
+                    <>
+                        {/* Sort bar */}
+                        <div className="mb-5 flex items-center justify-end gap-3">
+                            <span className="text-sm font-medium text-gray-600">
+                                সাজান
+                            </span>
+                            <SortDropdown current={sort} />
+                        </div>
+
+                        {/* Product grid */}
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                            {sortedProducts.map((product) => (
+                                <CatagoryCard
+                                    key={product.id}
+                                    icon={product.categoryIcon}
+                                    name={product.nameBn}
+                                    unit={`প্রতি ${getUnitBn(product.unit)}`}
+                                    price={product.today}
+                                    change={product.change.pct}
+                                />
+                            ))}
+                        </div>
+                    </>
                 )}
             </div>
         </section>
