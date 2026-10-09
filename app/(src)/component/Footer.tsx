@@ -1,6 +1,6 @@
-const Nav = () => {
+const Footer = () => {
     return (
-        <nav className="w-full bg-white">
+        <footer className="w-full bg-white">
             <div className="mx-auto flex h-[58px] max-w-[1300px] items-center justify-between px-5">
 
                 {/* Left */}
@@ -14,8 +14,8 @@ const Nav = () => {
                 </p>
 
             </div>
-        </nav>
+        </footer>
     );
 };
 
-export default Nav;
+export default Footer;

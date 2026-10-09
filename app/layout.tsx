@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "./(src)/component/Header";
-import Nav from "./(src)/component/Nav";
+import Footer from "./(src)/component/Footer";
+import Category from "./(src)/component/Category";
+import Marque from "./(src)/component/Marque";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,8 +32,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col">
         <div>
           <Header />
+          <Suspense fallback={<div className="h-10 w-full animate-pulse bg-gray-100" />}>
+            <Category />
+          </Suspense>
+
+          <Suspense fallback={<div className="h-[42px] w-full animate-pulse bg-[#f8fdf9]" />}>
+            <Marque />
+          </Suspense>
           <main className="bg-[#F0F5F0]">{children}</main>
-          <Nav />
+          <Footer />
         </div>
       </body>
     </html>
