@@ -48,6 +48,24 @@ const markets: Market[] = [
     { name: "নতুন বাজার", area: "ঢাকা", min: 143, max: 162, avg: 152.5 },
 ];
 
+const UNIT_BN: Record<string, string> = {
+    kg: "কেজি",
+    gram: "গ্রাম",
+    liter: "লিটার",
+    litre: "লিটার",
+    ltr: "লিটার",
+    ml: "মিলি",
+    piece: "পিস",
+    dozen: "ডজন",
+    packet: "প্যাকেট",
+    bag: "বস্তা",
+};
+
+const getUnitBn = (unit: string) => {
+    if (!unit) return "কেজি";
+    return UNIT_BN[unit.toLowerCase()] || unit;
+};
+
 const taka = (price: number) =>
     price.toLocaleString("bn-BD", {
         maximumFractionDigits: 2,
@@ -81,34 +99,25 @@ const ProductDetailsCard = ({
                 </nav>
 
                 {/* Product information */}
-                <section className="flex items-center justify-between gap-4 rounded-xl border border-[#dce6df] bg-[#fafcf9] p-4 sm:p-5">
-                    <div className="flex min-w-0 items-center gap-3">
-                        <div className="flex h-[54px] w-[54px] shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#eef4ed]">
-                            {product.image ? (
-                                // eslint-disable-next-line @next/next/no-img-element
-                                <img
-                                    src={product.image}
-                                    alt={product.nameBn}
-                                    className="h-full w-full object-contain"
-                                />
-                            ) : (
-                                <span className="text-3xl">
-                                    {product.categoryIcon || "🍚"}
-                                </span>
-                            )}
+                <section className="flex flex-col sm:flex-row items-center justify-between gap-5 rounded-2xl border border-[#dce6df] bg-[#fafcf9] p-5 sm:p-8 lg:p-10">
+                    <div className="flex w-full min-w-0 items-center gap-4 sm:gap-6">
+                        <div className="flex h-16 w-16 sm:h-24 sm:w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-[#eef4ed]">
+                            <span className="text-4xl sm:text-5xl">
+                                {product.image || product.categoryIcon || "🍚"}
+                            </span>
                         </div>
 
-                        <div className="min-w-0">
-                            <h1 className="text-xl font-bold sm:text-2xl">
+                        <div className="min-w-0 flex-1">
+                            <h1 className="text-2xl font-extrabold sm:text-3xl lg:text-4xl">
                                 {product.nameBn}
                             </h1>
 
-                            <p className="text-xs text-gray-500">
-                                প্রতি {product.unit || "কেজি"} ·{" "}
+                            <p className="mt-1 text-sm text-gray-500 sm:mt-2 sm:text-base">
+                                প্রতি {getUnitBn(product.unit || "")} ·{" "}
                                 {product.categoryNameBn || "চাল"}
                             </p>
 
-                            <p className="mt-1 text-[11px] text-gray-600">
+                            <p className="mt-2 text-xs sm:text-sm text-gray-600">
                                 সারাদেশের বাজারদর
                                 {product.change && (
                                     <span>
@@ -118,7 +127,7 @@ const ProductDetailsCard = ({
                                             : product.change.dir === "down"
                                                 ? "দাম কমেছে "
                                                 : "দাম পরিবর্তন "}
-                                        {taka(product.change.pct)}%
+                                        <span className="font-semibold">{taka(product.change.pct)}%</span>
                                     </span>
                                 )}
                             </p>
@@ -126,22 +135,22 @@ const ProductDetailsCard = ({
                     </div>
 
                     {/* Current price */}
-                    <div className="shrink-0 rounded-xl bg-[#f0f5f0] px-3 py-3 text-center sm:min-w-[100px]">
-                        <p className="text-[10px] text-gray-500">
+                    <div className="w-full shrink-0 rounded-2xl bg-[#f0f5f0] px-5 py-5 text-center sm:w-auto sm:min-w-[160px] sm:px-6 sm:py-6">
+                        <p className="text-xs font-medium text-gray-500 sm:text-sm">
                             আজকের দাম
                         </p>
 
-                        <p className="text-2xl font-bold leading-7">
+                        <p className="mt-2 mb-1 text-3xl font-extrabold leading-none sm:text-4xl text-[#1a241d]">
                             {taka(product.today)}
                         </p>
 
-                        <p className="text-[10px] text-gray-500">
-                            টাকা / {product.unit || "কেজি"}
+                        <p className="text-xs text-gray-500 sm:text-sm">
+                            টাকা / {getUnitBn(product.unit || "")}
                         </p>
 
                         {product.change && (
                             <p
-                                className={`mt-1 text-[10px] font-medium ${product.change.dir === "up"
+                                className={`mt-2 text-xs font-bold sm:text-sm ${product.change.dir === "up"
                                         ? "text-red-500"
                                         : product.change.dir === "down"
                                             ? "text-green-700"
@@ -208,7 +217,7 @@ const ProductDetailsCard = ({
                             </p>
 
                             <p className="text-[10px] text-gray-500">
-                                প্রতি {product.unit || "কেজি"}-এর গড়
+                                প্রতি {getUnitBn(product.unit || "")}-এর গড়
                             </p>
                         </div>
                     </div>
