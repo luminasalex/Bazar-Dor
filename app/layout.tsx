@@ -10,6 +10,8 @@ import Header from "./src/component/Header";
 import Footer from "./src/component/Footer";
 import Category from "./src/component/Category";
 import Marque from "./src/component/Marque";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -43,7 +45,7 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col">
         <Header />
 
-        {/* <Suspense
+        <Suspense
           fallback={
             <div className="h-10 w-full animate-pulse bg-gray-100" />
           }
@@ -57,13 +59,14 @@ export default function RootLayout({
           }
         >
           <Marque />
-        </Suspense> */}
+        </Suspense>
 
         <main className="flex-1 bg-[#F0F5F0]">
           {children}
         </main>
 
         <Footer />
+        <ToastContainer position="bottom-right" />
       </body>
     </html>
   );

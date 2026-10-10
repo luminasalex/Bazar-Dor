@@ -1,8 +1,21 @@
 "use client"
 import Image from "next/image";
+import { useState, useEffect } from "react";
 import heroImage from "../../../public/bazar-hero.png";
 
 const Hero = () => {
+    const [todayBn, setTodayBn] = useState("");
+
+    useEffect(() => {
+        const formatted = new Intl.DateTimeFormat('bn-BD', {
+            weekday: 'long',
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        }).format(new Date());
+        setTodayBn(formatted);
+    }, []);
+
     return (
         <section className="w-full bg-[#f3f8f4] px-3 py-4 xs:px-4 xs:py-5 sm:px-5 sm:py-6">
             <div
@@ -27,13 +40,14 @@ const Hero = () => {
                         "
                     >
                         <span
+                            suppressHydrationWarning
                             className="
                                 text-[11px] font-medium text-[#008b45]
                                 xs:text-xs
                                 sm:text-sm
                             "
                         >
-                            বৃহস্পতিবার, ৮ অক্টোবর, ২০২৬
+                            {todayBn || "\u00A0"}
                         </span>
                     </div>
 

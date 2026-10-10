@@ -3,8 +3,6 @@ import ProductHeroCard from "./ProductHeroCard";
 import SummaryCards from "./SummaryCards";
 import MarketPriceTable from "./MarketPriceTable";
 
-export const revalidate = 60;
-
 interface Market {
     market: string;
     division: string;
