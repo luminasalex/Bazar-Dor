@@ -13,7 +13,7 @@ const CatagoryCard = ({ icon, name, unit, price, change, slug }: CatagoryCardPro
     const isUp = change > 0;
 
     return (
-        <Link href={`/product/${slug}`} className="block h-full">
+        <Link href={`/product-details/${slug}`} className="block h-full">
         <article
             className="
                 group flex h-full flex-col justify-between

@@ -2,6 +2,7 @@ import DetailsCard from "@/app/src/component/Card Desing/Todey's/DetailsCard";
 
 interface Product {
     id: number;
+    slug: string;
     nameBn: string;
     categoryIcon: string;
     image: string;
@@ -92,6 +93,7 @@ const UpDownDetails = async () => {
                                     unit={`প্রতি ${getUnitBn(product.unit)}`}
                                     price={product.today}
                                     change={product.change.pct}
+                                    slug={product.slug}
                                 />
                             ))}
                         </div>
@@ -124,6 +126,7 @@ const UpDownDetails = async () => {
                                     unit={`প্রতি ${getUnitBn(product.unit)}`}
                                     price={product.today}
                                     change={product.change.pct}
+                                    slug={product.slug}
                                 />
                             ))}
                         </div>

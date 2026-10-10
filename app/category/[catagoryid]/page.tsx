@@ -24,9 +24,11 @@ const getUnitBn = (unit: string) => {
 
 interface Product {
     id: number;
+    slug: string;
     nameBn: string;
     unit: string;
     categoryIcon: string;
+    image: string;
     today: number;
     change: {
         dir: string;
@@ -157,11 +159,12 @@ const CategoryPage = async ({ params, searchParams }: CategoryPageProps) => {
                             {sortedProducts.map((product) => (
                                 <CatagoryCard
                                     key={product.id}
-                                    icon={product.categoryIcon}
+                                    icon={product.categoryIcon || product.image}
                                     name={product.nameBn}
                                     unit={`প্রতি ${getUnitBn(product.unit)}`}
                                     price={product.today}
                                     change={product.change.pct}
+                                    slug={product.slug}
                                 />
                             ))}
                         </div>

@@ -4,12 +4,16 @@ interface CatagoryCardProps {
     unit: string;
     price: number;
     change: number;
+    slug: string;
 }
 
-const CatagoryCard = ({ icon, name, unit, price, change }: CatagoryCardProps) => {
+import Link from "next/link";
+
+const CatagoryCard = ({ icon, name, unit, price, change, slug }: CatagoryCardProps) => {
     const isUp = change > 0;
 
     return (
+        <Link href={`/product-details/${slug}`}>
         <article
             className="
                 group flex h-full flex-col justify-between
@@ -95,6 +99,7 @@ const CatagoryCard = ({ icon, name, unit, price, change }: CatagoryCardProps) =>
                 </span>
             </div>
         </article>
+        </Link>
     );
 };
 
