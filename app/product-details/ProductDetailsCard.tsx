@@ -1,4 +1,5 @@
 
+import Image from "next/image";
 import Link from "next/link";
 
 interface Product {
@@ -18,6 +19,12 @@ interface Product {
         dir: string;
         pct: number;
     };
+    markets?: {
+        market: string;
+        division: string;
+        min: number;
+        max: number;
+    }[];
 }
 
 interface Market {
@@ -32,7 +39,51 @@ interface ProductDetailsCardProps {
     product: Product;
 }
 
-const markets: Market[] = [
+// ইউনিট বাংলায় দেখানোর ফাংশন
+const getUnitBn = (unit?: string) => {
+    switch (unit?.trim().toLowerCase()) {
+        case "kg":
+        case "kgs":
+        case "kilogram":
+        case "kilograms":
+            return "কেজি";
+
+        case "liter":
+        case "litre":
+        case "liters":
+        case "litres":
+        case "l":
+            return "লিটার";
+
+        case "gram":
+        case "grams":
+        case "g":
+            return "গ্রাম";
+
+        case "ml":
+        case "milliliter":
+        case "millilitre":
+            return "মিলিলিটার";
+
+        case "piece":
+        case "pieces":
+        case "pcs":
+        case "pc":
+            return "টি";
+
+        case "dozen":
+            return "ডজন";
+
+        case "packet":
+        case "pack":
+            return "প্যাকেট";
+
+        default:
+            return unit || "কেজি";
+    }
+};
+
+const defaultMarkets: Market[] = [
     { name: "মাঠ বাজার", area: "ময়মনসিংহ", min: 131, max: 146, avg: 139 },
     { name: "সদর বাজার", area: "রাজশাহী", min: 134, max: 148, avg: 141 },
     { name: "বাজারঘাট", area: "খুলনা", min: 134, max: 151, avg: 142.5 },
@@ -53,9 +104,19 @@ const taka = (price: number) =>
         maximumFractionDigits: 2,
     });
 
-const ProductDetailsCard = ({
-    product,
-}: ProductDetailsCardProps) => {
+const ProductDetailsCard = ({ product }: ProductDetailsCardProps) => {
+    const unitBn = getUnitBn(product.unit);
+
+    const markets: Market[] = product.markets?.length
+        ? product.markets.map((market) => ({
+            name: market.market,
+            area: market.division,
+            min: market.min,
+            max: market.max,
+            avg: (market.min + market.max) / 2,
+        }))
+        : defaultMarkets;
+
     const lowest = Math.min(...markets.map((market) => market.min));
     const highest = Math.max(...markets.map((market) => market.max));
 
@@ -63,37 +124,54 @@ const ProductDetailsCard = ({
         markets.reduce((sum, market) => sum + market.avg, 0) /
         markets.length;
 
+    const image = product.image?.trim() || "";
+    const isImageUrl = /^https?:\/\//i.test(image);
+
+    const icon = isImageUrl
+        ? product.categoryIcon || "🛒"
+        : image || product.categoryIcon || "🛒";
+
     return (
         <main className="min-h-screen bg-[#f0f5f0] px-4 py-4 text-[#26332a] sm:px-6 lg:px-8">
             <div className="mx-auto w-full max-w-[1200px]">
-
                 {/* Breadcrumb */}
-                <nav className="mb-5 flex items-center gap-2 text-[11px] text-gray-600">
+                <nav className="mb-5 flex flex-wrap items-center gap-2 text-[11px] text-gray-600">
                     <Link href="/" className="hover:text-green-700">
                         হোম
                     </Link>
+
                     <span>›</span>
+
                     <Link href="/" className="hover:text-green-700">
-                        চাল
+                        {product.categoryNameBn || "চাল"}
                     </Link>
+
                     <span>›</span>
+
                     <span>{product.nameBn}</span>
                 </nav>
 
                 {/* Product information */}
                 <section className="flex items-center justify-between gap-4 rounded-xl border border-[#dce6df] bg-[#fafcf9] p-4 sm:p-5">
                     <div className="flex min-w-0 items-center gap-3">
+                        {/* Product icon */}
                         <div className="flex h-[54px] w-[54px] shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#eef4ed]">
-                            {product.image ? (
-                                // eslint-disable-next-line @next/next/no-img-element
-                                <img
-                                    src={product.image}
+                            {isImageUrl ? (
+                                <Image
+                                    src={image}
                                     alt={product.nameBn}
+                                    width={54}
+                                    height={54}
+                                    unoptimized
                                     className="h-full w-full object-contain"
                                 />
                             ) : (
-                                <span className="text-3xl">
-                                    {product.categoryIcon || "🍚"}
+                                <span
+                                    className="text-3xl leading-none"
+                                    role="img"
+                                    aria-label={product.nameBn}
+                                >
+                                    {icon}
                                 </span>
                             )}
                         </div>
@@ -104,12 +182,13 @@ const ProductDetailsCard = ({
                             </h1>
 
                             <p className="text-xs text-gray-500">
-                                প্রতি {product.unit || "কেজি"} ·{" "}
+                                প্রতি {unitBn} ·{" "}
                                 {product.categoryNameBn || "চাল"}
                             </p>
 
                             <p className="mt-1 text-[11px] text-gray-600">
                                 সারাদেশের বাজারদর
+
                                 {product.change && (
                                     <span>
                                         {" "}আজ{" "}
@@ -136,16 +215,16 @@ const ProductDetailsCard = ({
                         </p>
 
                         <p className="text-[10px] text-gray-500">
-                            টাকা / {product.unit || "কেজি"}
+                            টাকা / {unitBn}
                         </p>
 
                         {product.change && (
                             <p
                                 className={`mt-1 text-[10px] font-medium ${product.change.dir === "up"
-                                        ? "text-red-500"
-                                        : product.change.dir === "down"
-                                            ? "text-green-700"
-                                            : "text-gray-500"
+                                    ? "text-red-500"
+                                    : product.change.dir === "down"
+                                        ? "text-green-700"
+                                        : "text-gray-500"
                                     }`}
                             >
                                 {product.change.dir === "up"
@@ -159,14 +238,14 @@ const ProductDetailsCard = ({
                     </div>
                 </section>
 
-                {/* Price summary and market table */}
+                {/* Price summary */}
                 <section className="mt-4 rounded-xl border border-[#dce6df] bg-[#fafcf9] p-4 sm:p-5">
                     <h2 className="mb-3 text-sm font-bold">
                         দামের সারসংক্ষেপ
                     </h2>
 
-                    {/* Summary cards */}
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                        {/* Lowest price */}
                         <div className="rounded-xl border border-[#dce6df] p-4">
                             <p className="text-[10px] text-gray-500">
                                 সর্বনিম্ন দাম
@@ -174,7 +253,9 @@ const ProductDetailsCard = ({
 
                             <p className="mt-1 text-xl font-bold text-green-700">
                                 {taka(lowest)}{" "}
-                                <span className="text-xs font-normal">টাকা</span>
+                                <span className="text-xs font-normal">
+                                    টাকা
+                                </span>
                             </p>
 
                             <p className="text-[10px] text-gray-500">
@@ -182,6 +263,7 @@ const ProductDetailsCard = ({
                             </p>
                         </div>
 
+                        {/* Highest price */}
                         <div className="rounded-xl border border-[#dce6df] p-4">
                             <p className="text-[10px] text-gray-500">
                                 সর্বোচ্চ দাম
@@ -189,7 +271,9 @@ const ProductDetailsCard = ({
 
                             <p className="mt-1 text-xl font-bold text-red-500">
                                 {taka(highest)}{" "}
-                                <span className="text-xs font-normal">টাকা</span>
+                                <span className="text-xs font-normal">
+                                    টাকা
+                                </span>
                             </p>
 
                             <p className="text-[10px] text-gray-500">
@@ -197,6 +281,7 @@ const ProductDetailsCard = ({
                             </p>
                         </div>
 
+                        {/* Average price */}
                         <div className="rounded-xl border border-[#dce6df] p-4">
                             <p className="text-[10px] text-gray-500">
                                 গড় দাম
@@ -204,11 +289,13 @@ const ProductDetailsCard = ({
 
                             <p className="mt-1 text-xl font-bold text-green-700">
                                 {taka(average)}{" "}
-                                <span className="text-xs font-normal">টাকা</span>
+                                <span className="text-xs font-normal">
+                                    টাকা
+                                </span>
                             </p>
 
                             <p className="text-[10px] text-gray-500">
-                                প্রতি {product.unit || "কেজি"}-এর গড়
+                                প্রতি {unitBn}-এর গড়
                             </p>
                         </div>
                     </div>
@@ -226,15 +313,19 @@ const ProductDetailsCard = ({
                                         <th className="px-3 py-3 text-left font-medium">
                                             বাজার
                                         </th>
+
                                         <th className="px-3 py-3 text-left font-medium">
                                             বিভাগ
                                         </th>
+
                                         <th className="px-3 py-3 text-right font-medium">
                                             সর্বনিম্ন
                                         </th>
+
                                         <th className="px-3 py-3 text-right font-medium">
                                             সর্বোচ্চ
                                         </th>
+
                                         <th className="px-3 py-3 text-right font-medium">
                                             গড়
                                         </th>
@@ -244,10 +335,10 @@ const ProductDetailsCard = ({
                                 <tbody>
                                     {markets.map((market, index) => (
                                         <tr
-                                            key={market.name}
+                                            key={`${market.name}-${index}`}
                                             className={`border-t border-[#e6ece6] ${index % 2 === 0
-                                                    ? "bg-[#fafcf9]"
-                                                    : "bg-[#f0f5f0]"
+                                                ? "bg-[#fafcf9]"
+                                                : "bg-[#f0f5f0]"
                                                 }`}
                                         >
                                             <td className="whitespace-nowrap px-3 py-[9px] font-medium">
@@ -279,7 +370,10 @@ const ProductDetailsCard = ({
 
                 {/* Footer */}
                 <div className="mt-5 flex items-center gap-2 pb-4 text-[11px] font-medium">
-                    <span>{product.categoryIcon || "🍚"}</span>
+                    <span role="img" aria-label={product.nameBn}>
+                        {icon}
+                    </span>
+
                     <span>{product.nameBn}</span>
                 </div>
             </div>
