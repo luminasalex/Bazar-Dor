@@ -22,6 +22,5 @@ export const config = {
   matcher: [
     "/profile/:path*",
     "/product-details/:path*",
-    "/category/:path*",
   ],
 };
