@@ -170,7 +170,7 @@ const Login = () => {
                     <p className="mt-6 text-center text-sm">
                         অ্যাকাউন্ট নেই?{" "}
                         <Link
-                            href="/sign-up"
+                            href="/sing-up"
                             className="font-semibold text-[#07883e] hover:underline"
                         >
                             সাইন আপ করুন
