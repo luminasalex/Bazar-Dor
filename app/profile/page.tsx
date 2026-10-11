@@ -38,11 +38,12 @@ const ProfilePage = () => {
             });
 
             if (error) {
-                toast.error(error.message || "প্রোফাইল আপডেট করতে সমস্যা হয়েছে।");
+                toast.error(
+                    error.message || "প্রোফাইল আপডেট করতে সমস্যা হয়েছে।"
+                );
                 return;
             }
 
-            setName(updatedName);
             toast.success("প্রোফাইল সফলভাবে আপডেট হয়েছে!");
         } catch (error) {
             console.error("Update profile error:", error);
@@ -90,7 +91,9 @@ const ProfilePage = () => {
     return (
         <main className="min-h-screen bg-[#f0f5f0] px-4 py-8 text-[#26332a]">
             <div className="mx-auto w-full max-w-[440px]">
-                <h1 className="text-xl font-bold">আমার প্রোফাইল</h1>
+                <h1 className="text-xl font-bold">
+                    আমার প্রোফাইল
+                </h1>
 
                 <p className="mb-5 mt-1 text-xs text-gray-500">
                     আপনার অ্যাকাউন্টের তথ্য এখানে দেখুন।
@@ -99,7 +102,7 @@ const ProfilePage = () => {
                 {/* User information */}
                 <div className="flex items-center justify-between gap-3 rounded-xl border border-[#e1e9e1] bg-[#fafcf9] p-4">
                     <div className="flex min-w-0 items-center gap-3">
-                        {/* Profile image */}
+                        {/* Profile image with default avatar */}
                         <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#e1e9e1]">
                             {session.user.image ? (
                                 <Image
@@ -112,11 +115,12 @@ const ProfilePage = () => {
                                 />
                             ) : (
                                 <svg
+                                    xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 24 24"
-                                    className="h-8 w-8 text-gray-500"
                                     fill="currentColor"
-                                    aria-label="Profile"
+                                    className="h-8 w-8 text-[#07883e]"
                                     role="img"
+                                    aria-label="Default profile"
                                 >
                                     <path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm0 2c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5Z" />
                                 </svg>
@@ -134,7 +138,7 @@ const ProfilePage = () => {
                         </div>
                     </div>
 
-                    {/* Sign out button */}
+                    {/* Sign out */}
                     <button
                         type="button"
                         onClick={handleSignOut}
@@ -147,9 +151,14 @@ const ProfilePage = () => {
 
                 {/* Profile form */}
                 <div className="mt-4 rounded-xl border border-[#e1e9e1] bg-[#fafcf9] p-5">
-                    <h2 className="mb-5 text-sm font-semibold">তথ্য</h2>
+                    <h2 className="mb-5 text-sm font-semibold">
+                        তথ্য
+                    </h2>
 
-                    <form onSubmit={handleUpdate} className="space-y-3">
+                    <form
+                        onSubmit={handleUpdate}
+                        className="space-y-3"
+                    >
                         <div>
                             <label
                                 htmlFor="name"
@@ -163,7 +172,9 @@ const ProfilePage = () => {
                                 name="name"
                                 type="text"
                                 value={name}
-                                onChange={(e) => setName(e.target.value)}
+                                onChange={(e) =>
+                                    setName(e.target.value)
+                                }
                                 placeholder="আপনার নাম লিখুন"
                                 autoComplete="name"
                                 required
@@ -176,7 +187,9 @@ const ProfilePage = () => {
                             disabled={loading}
                             className="h-9 w-full rounded-md bg-[#07883e] text-sm font-semibold text-white shadow-sm transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-60"
                         >
-                            {loading ? "আপডেট হচ্ছে..." : "আপডেট"}
+                            {loading
+                                ? "আপডেট হচ্ছে..."
+                                : "আপডেট"}
                         </button>
                     </form>
                 </div>
