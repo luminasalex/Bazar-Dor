@@ -23,8 +23,8 @@ const UNIT_BN: Record<string, string> = {
     kg: "কেজি",
     gram: "গ্রাম",
     liter: "লিটার",
-    litre: "লিটার",     // alternative spelling
-    ltr: "লিটার",       // short form
+    litre: "লিটার",
+    ltr: "লিটার",
     ml: "মিলি",
     piece: "পিস",
     dozen: "ডজন",
@@ -52,13 +52,13 @@ const AllProduct = async () => {
                 : (json as ApiResponse).products ?? [];
         }
     } catch {
-        // fetch failed silently
+
     }
 
     if (products.length === 0) return null;
 
     return (
-        <section className="w-full px-3 py-6 xs:px-4 sm:px-5 sm:py-8">
+        <section id="all-products" data-section="all-products" className="w-full scroll-mt-6 px-3 py-6 xs:px-4 sm:px-5 sm:py-8">
             <div className="mx-auto max-w-[1300px]">
 
                 {/* Header */}

@@ -80,7 +80,15 @@ const Hero = () => {
 
                     {/* Button */}
                     <button
-                        onClick={() => window.scrollTo({ top: 2100, behavior: "smooth" })}
+                        onClick={() => {
+                            const target =
+                                document.getElementById("all-products") ||
+                                document.querySelector('[data-section="all-products"]') ||
+                                Array.from(document.querySelectorAll("h2")).find((el) =>
+                                    el.textContent?.includes("সব পণ্য")
+                                );
+                            target?.scrollIntoView({ behavior: "smooth", block: "start" });
+                        }}
                         type="button"
                         className="
                             mt-5 rounded-md bg-[#008f46]

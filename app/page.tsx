@@ -8,7 +8,9 @@ export default function Home() {
     <div className="">
       <Hero />
       <UpDownDetails />
-      <AllProduct />
+      <div id="all-products" className="scroll-mt-4">
+        <AllProduct />
+      </div>
     </div>
   );
 }
