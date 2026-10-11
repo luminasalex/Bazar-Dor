@@ -1,4 +1,6 @@
-"use client"
+
+"use client";
+
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import heroImage from "../../../public/bazar-hero.png";
@@ -7,14 +9,33 @@ const Hero = () => {
     const [todayBn, setTodayBn] = useState("");
 
     useEffect(() => {
-        const formatted = new Intl.DateTimeFormat('bn-BD', {
-            weekday: 'long',
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric'
-        }).format(new Date());
-        setTodayBn(formatted);
+        const updateDate = () => {
+            const formatted = new Intl.DateTimeFormat("bn-BD", {
+                weekday: "long",
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+            }).format(new Date());
+
+            setTodayBn(formatted);
+        };
+
+        updateDate();
     }, []);
+
+    const handleScroll = () => {
+        const target =
+            document.getElementById("all-products") ||
+            document.querySelector('[data-section="all-products"]') ||
+            Array.from(document.querySelectorAll("h2")).find((el) =>
+                el.textContent?.includes("সব পণ্য")
+            );
+
+        target?.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+        });
+    };
 
     return (
         <section className="w-full bg-[#f3f8f4] px-3 py-4 xs:px-4 xs:py-5 sm:px-5 sm:py-6">
@@ -29,7 +50,7 @@ const Hero = () => {
                     lg:min-h-[390px] lg:flex-row lg:gap-8 lg:rounded-[24px] lg:px-12 lg:py-10
                 "
             >
-                {/* ================= CONTENT ================= */}
+                {/* Content */}
                 <div className="w-full lg:w-[60%]">
                     {/* Date */}
                     <div
@@ -40,7 +61,6 @@ const Hero = () => {
                         "
                     >
                         <span
-                            suppressHydrationWarning
                             className="
                                 text-[11px] font-medium text-[#008b45]
                                 xs:text-xs
@@ -80,15 +100,7 @@ const Hero = () => {
 
                     {/* Button */}
                     <button
-                        onClick={() => {
-                            const target =
-                                document.getElementById("all-products") ||
-                                document.querySelector('[data-section="all-products"]') ||
-                                Array.from(document.querySelectorAll("h2")).find((el) =>
-                                    el.textContent?.includes("সব পণ্য")
-                                );
-                            target?.scrollIntoView({ behavior: "smooth", block: "start" });
-                        }}
+                        onClick={handleScroll}
                         type="button"
                         className="
                             mt-5 rounded-md bg-[#008f46]
@@ -104,7 +116,7 @@ const Hero = () => {
                     </button>
                 </div>
 
-                {/* ================= IMAGE ================= */}
+                {/* Hero Image */}
                 <div className="flex w-full flex-1 items-center justify-center lg:w-auto">
                     <Image
                         src={heroImage}
